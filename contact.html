@@ -241,33 +241,34 @@
                 <div class="form-column col-xl-7 col-lg-12 col-sm-12 col-sm-12">
                     <div class="inner-column">
                         <div class="contact-form">
-                            <form action="#" method="post" id="email-form" novalidate>
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        <div class="response"></div>
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                        <input name="firstName" class="firstname" type="text" placeholder="First Name" required>
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                        <input name="lastName" class="lastname" type="text" placeholder="Last Name" required>
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                        <input name="email" class="email" type="email" placeholder="Enter Email" required>
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                        <input name="phone" class="phone" type="text" placeholder="Enter Phone" required>
-                                    </div>
-                                    <div class="form-group col-sm-12">
-                                        <textarea name="message" class="message" placeholder="Enter Message" required></textarea>
-                                    </div>
-                                    <div class="form-group col-sm-12">
-                                        <button type="button" id="submit" class="theme-btn btn-style-one hover-dark">
-                                            <span class="btn-title">Send Message</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                            <form id="contactForm" novalidate>
+    <div class="row">
+        <div class="form-group col-lg-12">
+            <div class="response"></div>
+        </div>
+        <div class="form-group col-sm-6">
+            <input id="fullName" name="firstName" type="text" placeholder="First Name" required>
+        </div>
+        <div class="form-group col-sm-6">
+            <input name="lastName" id="lastName" type="text" placeholder="Last Name" required>
+        </div>
+        <div class="form-group col-sm-6">
+            <input id="email" name="email" type="email" placeholder="Enter Email" required>
+        </div>
+        <div class="form-group col-sm-6">
+            <input id="phone" name="phone" type="text" placeholder="Enter Phone" required>
+        </div>
+        <div class="form-group col-sm-12">
+            <textarea id="message" name="message" placeholder="Enter Message" required></textarea>
+        </div>
+        <div class="form-group col-sm-12">
+            <button type="submit" class="theme-btn btn-style-one hover-dark">
+                <span class="btn-title">Send Message</span>
+            </button>
+        </div>
+    </div>
+</form>
+
                         </div>
                     </div>
                 </div>
@@ -530,5 +531,36 @@
 <script src="js/script.js"></script>
 <!-- Color Setting -->
 <script src="js/color-settings.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  // Initialize EmailJS
+  emailjs.init("Js1PeDZgWTE7Ck-J3"); // Replace with your EmailJS public key
+
+  // Form submit handler
+  document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const templateParams = {
+      fullName: document.getElementById("fullName").value + " " + document.getElementById("lastName").value,
+      email: document.getElementById("email").value,
+      phone: document.getElementById("phone").value,
+      message: document.getElementById("message").value
+    };
+
+    console.log("Sending data:", templateParams);
+
+    emailjs.send("service_vhvdwam", "template_7ig5mwq", templateParams)
+      .then(function(response) {
+        alert("Thank you for contacting us. We will get back to you soon.");
+        document.getElementById("contactForm").reset();
+      }, function(error) {
+        alert("❌ Failed to send message: " + JSON.stringify(error));
+        console.error("EmailJS Error:", error);
+      });
+  });
+</script>
+
 </body>
 </html>
